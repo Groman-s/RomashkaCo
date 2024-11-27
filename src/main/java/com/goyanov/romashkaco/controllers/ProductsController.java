@@ -13,13 +13,11 @@ import org.springframework.web.bind.annotation.*;
 public class ProductsController
 {
     private final ProductsService productsService;
-    private final ProductMapper productMapper;
 
     @Autowired
-    public ProductsController(ProductsService productsService, ProductMapper productMapper)
+    public ProductsController(ProductsService productsService)
     {
         this.productsService = productsService;
-        this.productMapper = productMapper;
     }
 
     @GetMapping("/products")
@@ -37,14 +35,14 @@ public class ProductsController
     @PostMapping("/products")
     public ResponseEntity<?> addProduct(@RequestBody @Valid ProductDTO productDTO)
     {
-        productsService.save(productMapper.toEntity(productDTO));
+        productsService.save(productDTO);
         return ResponseEntity.ok("Товар успешно добавлен!");
     }
 
     @PostMapping("/products/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable int id, @RequestBody @Valid ProductDTO productDTO)
     {
-        productsService.update(id, productMapper.toEntity(productDTO));
+        productsService.update(id, productDTO);
         return ResponseEntity.ok("Товар успешно обновлён!");
     }
 
