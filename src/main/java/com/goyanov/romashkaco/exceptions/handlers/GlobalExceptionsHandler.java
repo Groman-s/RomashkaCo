@@ -1,6 +1,8 @@
 package com.goyanov.romashkaco.exceptions.handlers;
 
 import com.goyanov.romashkaco.exceptions.ProductNotFoundException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -25,13 +27,12 @@ public class GlobalExceptionsHandler
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidations(MethodArgumentNotValidException ex)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<?> handleValidations(ConstraintViolationException ex)
     {
-        BindingResult bindingResult = ex.getBindingResult();
-        List<String> errors = bindingResult.getAllErrors()
+        List<String> errors = ex.getConstraintViolations()
                 .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .map(ConstraintViolation::getMessage)
                 .toList();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors.get(0));
     }

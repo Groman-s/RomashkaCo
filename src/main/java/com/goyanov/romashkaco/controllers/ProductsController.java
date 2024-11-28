@@ -33,14 +33,14 @@ public class ProductsController
     }
 
     @PostMapping("/products")
-    public ResponseEntity<?> addProduct(@RequestBody @Valid ProductDTO productDTO)
+    public ResponseEntity<?> addProduct(@RequestBody ProductDTO productDTO)
     {
         productsService.save(productDTO);
         return ResponseEntity.ok("Товар успешно добавлен!");
     }
 
     @PostMapping("/products/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable int id, @RequestBody @Valid ProductDTO productDTO)
+    public ResponseEntity<?> updateProduct(@PathVariable int id, @RequestBody ProductDTO productDTO)
     {
         productsService.update(id, productDTO);
         return ResponseEntity.ok("Товар успешно обновлён!");

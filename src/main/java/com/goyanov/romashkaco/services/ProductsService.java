@@ -5,22 +5,28 @@ import com.goyanov.romashkaco.model.Product;
 import com.goyanov.romashkaco.model.dto.ProductDTO;
 import com.goyanov.romashkaco.model.dto.mappers.ProductMapper;
 import com.goyanov.romashkaco.repositories.ProductsRepository;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ProductsService
 {
     private final ProductsRepository productsRepository;
     private final ProductMapper productMapper;
+    private final Validator validator;
 
     @Autowired
-    public ProductsService(ProductsRepository productsRepository, ProductMapper productMapper)
+    public ProductsService(ProductsRepository productsRepository, ProductMapper productMapper, Validator validator)
     {
         this.productsRepository = productsRepository;
         this.productMapper = productMapper;
+        this.validator = validator;
     }
 
     public List<ProductDTO> findAll()
@@ -35,7 +41,13 @@ public class ProductsService
 
     public void save(ProductDTO productDTO)
     {
-        productsRepository.save(productMapper.toEntity(productDTO));
+        Product product = productMapper.toEntity(productDTO);
+        Set<ConstraintViolation<Product>> validate = validator.validate(product);
+        if (!validate.isEmpty())
+        {
+            throw new ConstraintViolationException(validate);
+        }
+        productsRepository.save(product);
     }
 
     public void update(long id, ProductDTO productDTO)
@@ -43,6 +55,11 @@ public class ProductsService
         productsRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         Product product = productMapper.toEntity(productDTO);
         product.setId(id);
+        Set<ConstraintViolation<Product>> validate = validator.validate(product);
+        if (!validate.isEmpty())
+        {
+            throw new ConstraintViolationException(validate);
+        }
         productsRepository.save(product);
     }
 
