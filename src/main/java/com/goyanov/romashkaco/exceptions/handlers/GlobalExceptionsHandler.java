@@ -1,6 +1,8 @@
 package com.goyanov.romashkaco.exceptions.handlers;
 
 import com.goyanov.romashkaco.exceptions.ProductNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,8 @@ import java.util.List;
 @ControllerAdvice
 public class GlobalExceptionsHandler
 {
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionsHandler.class);
+
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<?> handleProductNotFound(ProductNotFoundException ex)
     {
@@ -35,6 +39,7 @@ public class GlobalExceptionsHandler
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleOthers(Exception ex)
     {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+        logger.error(ex.getMessage(), ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Непредвиденная ошибка на сервере!");
     }
 }
