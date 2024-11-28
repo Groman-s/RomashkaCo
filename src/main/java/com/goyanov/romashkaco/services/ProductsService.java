@@ -5,7 +5,6 @@ import com.goyanov.romashkaco.model.Product;
 import com.goyanov.romashkaco.model.dto.ProductDTO;
 import com.goyanov.romashkaco.model.dto.mappers.ProductMapper;
 import com.goyanov.romashkaco.repositories.ProductsRepository;
-import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
@@ -35,7 +34,7 @@ public class ProductsService
         return productsRepository.findAll().stream().map(productMapper::toDTO).toList();
     }
 
-    public ProductDTO findById(long id)
+    public ProductDTO findById(Long id)
     {
         return productMapper.toDTO(productsRepository.findById(id).orElseThrow(ProductNotFoundException::new));
     }
@@ -51,9 +50,9 @@ public class ProductsService
         productsRepository.save(product);
     }
 
-    public void update(long id, ProductDTO productDTO)
+    public void update(Long id, ProductDTO productDTO)
     {
-        Product existing = productsRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+        Product existing = productsRepository.findById(id).orElseThrow(ProductNotFoundException::new).clone();
         productMapper.copyProperties(productDTO, existing);
         Set<ConstraintViolation<Product>> validate = validator.validate(existing);
         if (!validate.isEmpty())
@@ -63,7 +62,7 @@ public class ProductsService
         productsRepository.save(existing);
     }
 
-    public void deleteById(long id)
+    public void deleteById(Long id)
     {
         productsRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         productsRepository.deleteById(id);
