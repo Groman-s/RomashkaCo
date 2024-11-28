@@ -5,6 +5,7 @@ import com.goyanov.romashkaco.model.Product;
 import com.goyanov.romashkaco.model.dto.ProductDTO;
 import com.goyanov.romashkaco.model.dto.mappers.ProductMapper;
 import com.goyanov.romashkaco.repositories.ProductsRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
@@ -52,15 +53,14 @@ public class ProductsService
 
     public void update(long id, ProductDTO productDTO)
     {
-        productsRepository.findById(id).orElseThrow(ProductNotFoundException::new);
-        Product product = productMapper.toEntity(productDTO);
-        product.setId(id);
-        Set<ConstraintViolation<Product>> validate = validator.validate(product);
+        Product existing = productsRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+        productMapper.copyProperties(productDTO, existing);
+        Set<ConstraintViolation<Product>> validate = validator.validate(existing);
         if (!validate.isEmpty())
         {
             throw new ConstraintViolationException(validate);
         }
-        productsRepository.save(product);
+        productsRepository.save(existing);
     }
 
     public void deleteById(long id)
