@@ -39,7 +39,7 @@ public class ProductsController
         return ResponseEntity.ok("Товар успешно добавлен!");
     }
 
-    @PostMapping("/products/{id}")
+    @PatchMapping("/products/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable int id, @RequestBody ProductDTO productDTO)
     {
         productsService.update(id, productDTO);
