@@ -17,17 +17,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ProductDTO
 {
-    @NotBlank(message = "Товар обязательно должен иметь название!")
-    @Size(max = 255, message = "Название товара не должно быть длиннее 255 символов!")
     private String name;
-
-    @Size(max = 4096, message = "Описание слишком большое!")
     private String description;
-
-    @Min(value = 0, message = "Стоимость товара не может быть отрицательной!")
-    private BigDecimal price = BigDecimal.ZERO;
-
-    private Boolean inStock = false;
+    private BigDecimal price;
+    private Boolean inStock;
 
     public ProductDTO(Product product)
     {

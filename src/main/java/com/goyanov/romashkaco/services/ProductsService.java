@@ -48,6 +48,7 @@ public class ProductsService
 
     public void deleteById(long id)
     {
-        if (!productsRepository.deleteById(id)) throw new ProductNotFoundException();
+        productsRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+        productsRepository.deleteById(id);
     }
 }

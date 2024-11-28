@@ -1,38 +1,11 @@
 package com.goyanov.romashkaco.repositories;
 
 import com.goyanov.romashkaco.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
-
 @Repository
-public class ProductsRepository
+public interface ProductsRepository extends JpaRepository<Product, Long>
 {
-    private final Map<Long, Product> products = new HashMap<>();
-    private final AtomicLong lastGeneratedId =  new AtomicLong(0);
 
-    public List<Product> findAll()
-    {
-        return new ArrayList<>(products.values());
-    }
-
-    public Optional<Product> findById(long id)
-    {
-        return Optional.ofNullable(products.get(id));
-    }
-
-    public void save(Product product)
-    {
-        if (product.getId() == null)
-        {
-            product.setId(lastGeneratedId.incrementAndGet());
-        }
-        products.put(product.getId(), product);
-    }
-
-    public boolean deleteById(long id)
-    {
-        return products.remove(id) != null;
-    }
 }
