@@ -21,9 +21,9 @@ public class ProductsController
     }
 
     @GetMapping("/products")
-    public ResponseEntity<?> getAllProducts()
+    public ResponseEntity<?> getAllProducts(@RequestParam(required = false) String keyWord)
     {
-        return ResponseEntity.ok(productsService.findAll());
+        return ResponseEntity.ok(keyWord == null ? productsService.findAll() : productsService.findByKeyWord(keyWord));
     }
 
     @GetMapping("/products/{id}")

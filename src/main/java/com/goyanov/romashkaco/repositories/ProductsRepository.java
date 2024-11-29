@@ -17,5 +17,5 @@ public interface ProductsRepository extends JpaRepository<Product, Long>
         "or lower(p.description) like '%'||lower(:keyWord)||'%' " +
         "order by case when lower(p.name) like '%'||lower(:keyWord)||'%' then 1 else 2 end"
     )
-    List<Product> filterByKeyword(String keyWord);
+    List<Product> findByKeyWord(String keyWord);
 }

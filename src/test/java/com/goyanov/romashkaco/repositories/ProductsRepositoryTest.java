@@ -8,8 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class ProductsRepositoryTest
 {
@@ -20,7 +18,7 @@ class ProductsRepositoryTest
     @Disabled
     public void testFilters()
     {
-        List<Product> products = productsRepository.filterByKeyword("яблоко");
+        List<Product> products = productsRepository.findByKeyWord("яблоко");
         System.out.println("SUCCESS");
     }
 }

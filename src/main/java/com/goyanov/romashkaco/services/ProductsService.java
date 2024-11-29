@@ -5,7 +5,6 @@ import com.goyanov.romashkaco.model.Product;
 import com.goyanov.romashkaco.model.dto.ProductDTO;
 import com.goyanov.romashkaco.model.dto.mappers.ProductMapper;
 import com.goyanov.romashkaco.repositories.ProductsRepository;
-import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
@@ -33,6 +32,11 @@ public class ProductsService
     public List<ProductDTO> findAll()
     {
         return productsRepository.findAll().stream().map(productMapper::toDTO).toList();
+    }
+
+    public List<ProductDTO> findByKeyWord(String keyWord)
+    {
+        return productsRepository.findByKeyWord(keyWord).stream().map(productMapper::toDTO).toList();
     }
 
     public ProductDTO findById(long id)
