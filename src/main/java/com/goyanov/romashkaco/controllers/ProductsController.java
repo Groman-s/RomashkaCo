@@ -21,9 +21,17 @@ public class ProductsController
     }
 
     @GetMapping("/products")
-    public ResponseEntity<?> getAllProducts(@RequestParam(required = false) String keyWord)
+    public ResponseEntity<?> getAllProducts
+    (
+        @RequestParam(required = false) String keyWord,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    )
     {
-        return ResponseEntity.ok(keyWord == null ? productsService.findAll() : productsService.findByKeyWord(keyWord));
+        return ResponseEntity.ok(keyWord == null ?
+                productsService.findAll(page, size) :
+                productsService.findByKeyWord(keyWord, page, size)
+        );
     }
 
     @GetMapping("/products/{id}")

@@ -9,6 +9,8 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,14 +31,16 @@ public class ProductsService
         this.validator = validator;
     }
 
-    public List<ProductDTO> findAll()
+    public List<ProductDTO> findAll(int page, int size)
     {
-        return productsRepository.findAll().stream().map(productMapper::toDTO).toList();
+        Pageable pageable = PageRequest.of(page, size);
+        return productsRepository.findAll(pageable).stream().map(productMapper::toDTO).toList();
     }
 
-    public List<ProductDTO> findByKeyWord(String keyWord)
+    public List<ProductDTO> findByKeyWord(String keyWord, int page, int size)
     {
-        return productsRepository.findByKeyWord(keyWord).stream().map(productMapper::toDTO).toList();
+        Pageable pageable = PageRequest.of(page, size);
+        return productsRepository.findByKeyWord(keyWord, pageable).stream().map(productMapper::toDTO).toList();
     }
 
     public ProductDTO findById(long id)
