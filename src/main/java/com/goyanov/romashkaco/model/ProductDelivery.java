@@ -11,31 +11,9 @@ import lombok.Setter;
 import org.hibernate.annotations.Check;
 import org.hibernate.annotations.ColumnDefault;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "product_delivery")
-public class ProductDelivery
+public class ProductDelivery extends ProductTransaction
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_delivery_id")
-    private Long id;
 
-    @Column(name = "document_name")
-    @NotBlank(message = "Заполните название документа!")
-    @Check(constraints = "trim(name) <> ''")
-    @Size(max = 255, message = "Название документа не может быть длиннее 255 символов!")
-    private String documentName;
-
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
-
-    @Column(name = "amount")
-    @Min(value = 1, message = "Минимально количество товаров для поставки: 1")
-    @ColumnDefault("1")
-    private Integer amount = 1;
 }
