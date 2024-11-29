@@ -12,6 +12,8 @@ import org.hibernate.annotations.Check;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -44,4 +46,10 @@ public class Product
     @Column(name = "in_stock", nullable = false)
     @ColumnDefault("false")
     private Boolean inStock = false;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductDelivery> deliveries = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductSale> sales = new ArrayList<>();
 }
