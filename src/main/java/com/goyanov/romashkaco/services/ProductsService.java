@@ -53,6 +53,11 @@ public class ProductsService
     {
         Specification<Product> specification = Specification.where(null);
 
+        if (!orderBy.equals("name") && !orderBy.equals("price"))
+        {
+            orderBy = "name";
+        }
+
         if (inStock != null)
         {
             specification = specification.and((Specification<Product>) (root, query, criteriaBuilder)
@@ -85,7 +90,7 @@ public class ProductsService
         return products.stream().map(productMapper::toDTO).toList();
     }
 
-    public ProductDTO findById(long id)
+    public ProductDTO findById(Long id)
     {
         return productMapper.toDTO(productsRepository.findById(id).orElseThrow(ProductNotFoundException::new));
     }
@@ -101,7 +106,7 @@ public class ProductsService
         productsRepository.save(product);
     }
 
-    public void update(long id, ProductDTO productDTO)
+    public void update(Long id, ProductDTO productDTO)
     {
         Product existing = productsRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         productMapper.copyProperties(productDTO, existing);
@@ -113,7 +118,7 @@ public class ProductsService
         productsRepository.save(existing);
     }
 
-    public void deleteById(long id)
+    public void deleteById(Long id)
     {
         productsRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         productsRepository.deleteById(id);
