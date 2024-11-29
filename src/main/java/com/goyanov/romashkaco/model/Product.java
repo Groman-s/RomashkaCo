@@ -48,6 +48,8 @@ public class Product
     private Boolean inStock = false;
 
     @Column(name = "amount", nullable = false)
+    @ColumnDefault("0")
+    @Min(value = 0, message = "Количество товара не может быть отрицательным!")
     private Integer amount = 0;
 
     @OneToMany(mappedBy = "product")
