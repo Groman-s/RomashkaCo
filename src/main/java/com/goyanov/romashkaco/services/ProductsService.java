@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,10 @@ public class ProductsService
     }
 
     public List<ProductDTO> findAllWithFilters
-                (String name, Boolean inStock, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable)
+    (
+        int page, int size, String name, Boolean inStock,
+        BigDecimal minPrice, BigDecimal maxPrice, String orderBy, String direction
+    )
     {
         Specification<Product> specification = Specification.where(null);
 
@@ -76,6 +80,7 @@ public class ProductsService
                 -> criteriaBuilder.lessThan(root.get("price"), maxPrice));
         }
 
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), orderBy));
         List<Product> products = productsRepository.findAll(specification, pageable).getContent();
         return products.stream().map(productMapper::toDTO).toList();
     }

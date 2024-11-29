@@ -38,8 +38,8 @@ public class ProductsController
         @RequestParam(defaultValue = "asc") String direction
     )
     {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), orderBy));
-        return ResponseEntity.ok(productsService.findAllWithFilters(name, inStock, minPrice, maxPrice, pageable));
+        return ResponseEntity.ok(productsService.findAllWithFilters
+            (page, size, name, inStock, minPrice, maxPrice, orderBy, direction));
     }
 
     @GetMapping("/products/{id}")
