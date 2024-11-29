@@ -1,1 +1,0 @@
-docker run -d -p 5438:5432 --network romashka --name postgres17 -e POSTGRES_PASSWORD=123 postgres

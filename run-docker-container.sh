@@ -1,1 +1,0 @@
-docker run -d -p 8080:8080 --name romashka --network romashka -e DB_HOST=postgres17 -e DB_PORT=5432 -e DB_NAME=romashkaco -e DB_USER=postgres -e DB_PWD=123 romashka-ms

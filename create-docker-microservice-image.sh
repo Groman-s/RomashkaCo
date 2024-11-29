@@ -1,1 +1,1 @@
-docker build --tag romashka-ms .
+docker build --tag romashka .
