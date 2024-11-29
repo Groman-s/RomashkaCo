@@ -1,12 +1,15 @@
 package com.goyanov.romashkaco.controllers;
 
 import com.goyanov.romashkaco.model.dto.ProductDTO;
-import com.goyanov.romashkaco.model.dto.mappers.ProductMapper;
 import com.goyanov.romashkaco.services.ProductsService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api")
@@ -23,15 +26,20 @@ public class ProductsController
     @GetMapping("/products")
     public ResponseEntity<?> getAllProducts
     (
-        @RequestParam(required = false) String keyWord,
         @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size
+        @RequestParam(defaultValue = "10") int size,
+
+        @RequestParam(required = false) Boolean inStock,
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) BigDecimal maxPrice,
+        @RequestParam(required = false) BigDecimal minPrice,
+
+        @RequestParam(defaultValue = "id") String orderBy,
+        @RequestParam(defaultValue = "asc") String direction
     )
     {
-        return ResponseEntity.ok(keyWord == null ?
-                productsService.findAll(page, size) :
-                productsService.findByKeyWord(keyWord, page, size)
-        );
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), orderBy));
+        return ResponseEntity.ok(productsService.findAllWithFilters(name, inStock, minPrice, maxPrice, pageable));
     }
 
     @GetMapping("/products/{id}")

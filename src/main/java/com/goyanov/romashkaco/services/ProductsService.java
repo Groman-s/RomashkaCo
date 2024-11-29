@@ -5,14 +5,21 @@ import com.goyanov.romashkaco.model.Product;
 import com.goyanov.romashkaco.model.dto.ProductDTO;
 import com.goyanov.romashkaco.model.dto.mappers.ProductMapper;
 import com.goyanov.romashkaco.repositories.ProductsRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -37,10 +44,40 @@ public class ProductsService
         return productsRepository.findAll(pageable).stream().map(productMapper::toDTO).toList();
     }
 
-    public List<ProductDTO> findByKeyWord(String keyWord, int page, int size)
+    public List<ProductDTO> findAllWithFilters
+                (String name, Boolean inStock, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable)
     {
-        Pageable pageable = PageRequest.of(page, size);
-        return productsRepository.findByKeyWord(keyWord, pageable).stream().map(productMapper::toDTO).toList();
+        Specification<Product> specification = Specification.where(null);
+
+        if (inStock != null)
+        {
+            specification = specification.and((Specification<Product>) (root, query, criteriaBuilder)
+                -> criteriaBuilder.equal(root.get("inStock"), inStock)
+            );
+        }
+
+        if (name != null && !name.isBlank())
+        {
+            specification = specification.and((Specification<Product>) (root, query, criteriaBuilder)
+                -> criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + name.toLowerCase() + "%")
+            );
+        }
+
+        if (minPrice != null)
+        {
+            specification = specification.and((Specification<Product>) (root, query, criteriaBuilder)
+                -> criteriaBuilder.greaterThan(root.get("price"), minPrice)
+            );
+        }
+
+        if (maxPrice != null)
+        {
+            specification = specification.and((Specification<Product>) (root, query, criteriaBuilder)
+                -> criteriaBuilder.lessThan(root.get("price"), maxPrice));
+        }
+
+        List<Product> products = productsRepository.findAll(specification, pageable).getContent();
+        return products.stream().map(productMapper::toDTO).toList();
     }
 
     public ProductDTO findById(long id)
