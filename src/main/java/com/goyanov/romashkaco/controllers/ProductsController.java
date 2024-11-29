@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/products")
 public class ProductsController
 {
     private final ProductsService productsService;
@@ -23,7 +23,7 @@ public class ProductsController
         this.productsService = productsService;
     }
 
-    @GetMapping("/products")
+    @GetMapping
     public ResponseEntity<?> getAllProducts
     (
         @RequestParam(defaultValue = "0") int page,
@@ -42,27 +42,27 @@ public class ProductsController
             (page, size, name, inStock, minPrice, maxPrice, orderBy, direction));
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable int id)
     {
         return ResponseEntity.ok(productsService.findById(id));
     }
 
-    @PostMapping("/products")
+    @PostMapping
     public ResponseEntity<?> addProduct(@RequestBody ProductDTO productDTO)
     {
         productsService.save(productDTO);
         return ResponseEntity.ok("Товар успешно добавлен!");
     }
 
-    @PatchMapping("/products/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable int id, @RequestBody ProductDTO productDTO)
     {
         productsService.update(id, productDTO);
         return ResponseEntity.ok("Товар успешно обновлён!");
     }
 
-    @DeleteMapping("/products/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable int id)
     {
         productsService.deleteById(id);
