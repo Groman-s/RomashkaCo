@@ -47,6 +47,9 @@ public class Product
     @ColumnDefault("false")
     private Boolean inStock = false;
 
+    @Column(name = "amount", nullable = false)
+    private Integer amount = 0;
+
     @OneToMany(mappedBy = "product")
     private List<ProductDelivery> deliveries = new ArrayList<>();
 

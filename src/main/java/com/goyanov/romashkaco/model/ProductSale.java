@@ -11,9 +11,14 @@ import lombok.Setter;
 import org.hibernate.annotations.Check;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "product_sale")
 public class ProductSale extends ProductTransaction
 {
-
+    @Column(name = "sale_price", nullable = false)
+    @Min(value = 0, message = "Стоимость продажи не может быть отрицательной!")
+    @ColumnDefault("0")
+    private BigDecimal salePrice = BigDecimal.ZERO;
 }

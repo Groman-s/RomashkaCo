@@ -23,7 +23,7 @@ public abstract class ProductTransaction
     @Column(name = "product_delivery_id")
     protected Long id;
 
-    @Column(name = "document_name")
+    @Column(name = "document_name", nullable = false)
     @NotBlank(message = "Заполните название документа!")
     @Check(constraints = "trim(document_name) <> ''")
     @Size(max = 255, message = "Название документа не может быть длиннее 255 символов!")
@@ -33,7 +33,7 @@ public abstract class ProductTransaction
     @JoinColumn(name = "product_id", nullable = false)
     protected Product product;
 
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     @Min(value = 1, message = "Минимально количество товаров для поставки: 1")
     @ColumnDefault("1")
     protected Integer amount = 1;
