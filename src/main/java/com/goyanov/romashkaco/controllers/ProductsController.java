@@ -34,7 +34,7 @@ public class ProductsController
         @RequestParam(required = false) BigDecimal maxPrice,
         @RequestParam(required = false) BigDecimal minPrice,
 
-        @RequestParam(defaultValue = "id") String orderBy,
+        @RequestParam(defaultValue = "name") String orderBy,
         @RequestParam(defaultValue = "asc") String direction
     )
     {

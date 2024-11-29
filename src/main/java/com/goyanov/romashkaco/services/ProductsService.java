@@ -53,6 +53,11 @@ public class ProductsService
     {
         Specification<Product> specification = Specification.where(null);
 
+        if (!orderBy.equals("name") && !orderBy.equals("price"))
+        {
+            orderBy = "name";
+        }
+
         if (inStock != null)
         {
             specification = specification.and((Specification<Product>) (root, query, criteriaBuilder)
