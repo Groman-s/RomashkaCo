@@ -8,6 +8,8 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123
       - POSTGRES_DB=romashkaco
+    volumes:
+      - pg_data:/var/lib/postgresql/data
 
   romashka-ms:
     image: romashka
@@ -23,4 +25,6 @@ services:
     depends_on:
       - romashka-db # имя первого сервиса (с БД)
 
+volumes:
+  pg_data:
 
