@@ -43,7 +43,7 @@ public class ProductsController
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable long id)
+    public ResponseEntity<?> getProductById(@PathVariable Long id)
     {
         return ResponseEntity.ok(productsService.findById(id));
     }
@@ -56,14 +56,14 @@ public class ProductsController
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable long id, @RequestBody ProductDTO productDTO)
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO)
     {
         productsService.update(id, productDTO);
         return ResponseEntity.ok("Товар успешно обновлён!");
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable long id)
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id)
     {
         productsService.deleteById(id);
         return ResponseEntity.ok().body("Продукт успешно удалён!");

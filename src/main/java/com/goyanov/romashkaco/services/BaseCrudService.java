@@ -41,13 +41,13 @@ public abstract class BaseCrudService<ENT, ID, DTO>
 
     public void save(DTO dto)
     {
-        ENT product = modelMapper.toEntity(dto);
-        Set<ConstraintViolation<ENT>> validate = validator.validate(product);
+        ENT entity = modelMapper.toEntity(dto);
+        Set<ConstraintViolation<ENT>> validate = validator.validate(entity);
         if (!validate.isEmpty())
         {
             throw new ConstraintViolationException(validate);
         }
-        repository.save(product);
+        repository.save(entity);
     }
 
     public void update(ID id, DTO productDTO)
