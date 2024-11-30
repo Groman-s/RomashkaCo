@@ -1,6 +1,8 @@
 package com.goyanov.romashkaco.controllers;
 
+import com.goyanov.romashkaco.model.Product;
 import com.goyanov.romashkaco.model.dto.ProductDTO;
+import com.goyanov.romashkaco.services.BaseCrudService;
 import com.goyanov.romashkaco.services.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -13,14 +15,12 @@ import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/products")
-public class ProductsController
+public class ProductsController extends BaseCrudController<Product, Long, ProductDTO>
 {
-    private final ProductsService productsService;
-
     @Autowired
-    public ProductsController(ProductsService productsService)
+    public ProductsController(BaseCrudService<Product, Long, ProductDTO> service)
     {
-        this.productsService = productsService;
+        super(service);
     }
 
     @GetMapping
@@ -38,34 +38,25 @@ public class ProductsController
         @RequestParam(defaultValue = "asc") String direction
     )
     {
-        return ResponseEntity.ok(productsService.findAllWithFilters
+        return ResponseEntity.ok(((ProductsService)service).findAllWithFilters
             (page, size, name, inStock, minPrice, maxPrice, orderBy, direction));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable Long id)
+    @Override
+    public String getAddedMessage()
     {
-        return ResponseEntity.ok(productsService.findById(id));
+        return "Товар успешно добавлен!";
     }
 
-    @PostMapping
-    public ResponseEntity<?> addProduct(@RequestBody ProductDTO productDTO)
+    @Override
+    public String getUpdatedMessage()
     {
-        productsService.save(productDTO);
-        return ResponseEntity.ok("Товар успешно добавлен!");
+        return "Товар успешно обновлён!";
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO)
+    @Override
+    public String getDeletedMessage()
     {
-        productsService.update(id, productDTO);
-        return ResponseEntity.ok("Товар успешно обновлён!");
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long id)
-    {
-        productsService.deleteById(id);
-        return ResponseEntity.ok().body("Продукт успешно удалён!");
+        return "Продукт успешно удалён!";
     }
 }
