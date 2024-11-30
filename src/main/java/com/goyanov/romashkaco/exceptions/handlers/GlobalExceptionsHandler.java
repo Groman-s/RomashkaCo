@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
 
@@ -21,6 +22,12 @@ public class GlobalExceptionsHandler
     public ResponseEntity<?> handleProductNotFound(EntityNotFoundException ex)
     {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<?> handleNoResourceFoundException(NoResourceFoundException ex)
+    {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Путь обращения указан неверно!");
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
