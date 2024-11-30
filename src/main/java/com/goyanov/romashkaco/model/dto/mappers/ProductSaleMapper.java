@@ -1,21 +1,20 @@
 package com.goyanov.romashkaco.model.dto.mappers;
 
-import com.goyanov.romashkaco.exceptions.not.found.ProductByArticleNotFoundException;
 import com.goyanov.romashkaco.model.ProductSale;
 import com.goyanov.romashkaco.model.dto.ProductSaleDTO;
-import com.goyanov.romashkaco.repositories.ProductsRepository;
+import com.goyanov.romashkaco.services.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProductSaleMapper implements ModelMapper<ProductSale, ProductSaleDTO>
 {
-    private final ProductsRepository productsRepository;
+    private final ProductsService productsService;
 
     @Autowired
-    public ProductSaleMapper(ProductsRepository productsRepository)
+    public ProductSaleMapper(ProductsService productsService)
     {
-        this.productsRepository = productsRepository;
+        this.productsService = productsService;
     }
 
     @Override
@@ -32,9 +31,7 @@ public class ProductSaleMapper implements ModelMapper<ProductSale, ProductSaleDT
         if (from.getAmount() != null) to.setAmount(from.getAmount());
         if (from.getSalePrice() != null) to.setSalePrice(from.getSalePrice());
         if (from.getDocumentName() != null) to.setDocumentName(from.getDocumentName());
-        if (from.getProductArticle() != null)
-            to.setProduct(productsRepository.findByArticle(from.getProductArticle()).
-                    orElseThrow(ProductByArticleNotFoundException::new));
+        if (from.getProductArticle() != null) to.setProduct(productsService.findByArticle(from.getProductArticle()));
     }
 
     @Override

@@ -1,10 +1,12 @@
 package com.goyanov.romashkaco.services;
 
+import com.goyanov.romashkaco.exceptions.not.found.ProductByArticleNotFoundException;
 import com.goyanov.romashkaco.exceptions.not.found.ProductByIdNotFoundException;
 import com.goyanov.romashkaco.exceptions.not.found.EntityNotFoundException;
 import com.goyanov.romashkaco.model.Product;
 import com.goyanov.romashkaco.model.dto.ProductDTO;
 import com.goyanov.romashkaco.model.dto.mappers.ModelMapper;
+import com.goyanov.romashkaco.repositories.ProductsRepository;
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -77,5 +79,10 @@ public class ProductsService extends BaseCrudService<Product, Long, ProductDTO>
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), orderBy));
         List<Product> products = ((JpaSpecificationExecutor<Product>)repository).findAll(specification, pageable).getContent();
         return products.stream().map(modelMapper::toDTO).toList();
+    }
+
+    public Product findByArticle(Long article)
+    {
+        return ((ProductsRepository)repository).findByArticle(article).orElseThrow(ProductByArticleNotFoundException::new);
     }
 }
