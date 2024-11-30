@@ -1,16 +1,13 @@
 package com.goyanov.romashkaco.exceptions.handlers;
 
-import com.goyanov.romashkaco.exceptions.ProductNotFoundException;
+import com.goyanov.romashkaco.exceptions.not.found.EntityNotFoundException;
+import com.goyanov.romashkaco.exceptions.not.found.ProductNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -21,8 +18,8 @@ public class GlobalExceptionsHandler
 {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionsHandler.class);
 
-    @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<?> handleProductNotFound(ProductNotFoundException ex)
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> handleProductNotFound(EntityNotFoundException ex)
     {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }

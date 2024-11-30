@@ -1,21 +1,12 @@
 package com.goyanov.romashkaco.services;
 
-import com.goyanov.romashkaco.exceptions.ProductNotFoundException;
+import com.goyanov.romashkaco.exceptions.not.found.ProductNotFoundException;
 import com.goyanov.romashkaco.exceptions.not.found.EntityNotFoundException;
 import com.goyanov.romashkaco.model.Product;
 import com.goyanov.romashkaco.model.dto.ProductDTO;
 import com.goyanov.romashkaco.model.dto.mappers.ModelMapper;
-import com.goyanov.romashkaco.model.dto.mappers.ProductMapper;
-import com.goyanov.romashkaco.repositories.ProductsRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ProductsService extends BaseCrudService<Product, Long, ProductDTO>
