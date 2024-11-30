@@ -1,8 +1,10 @@
 package com.goyanov.romashkaco.services;
 
 import com.goyanov.romashkaco.exceptions.ProductNotFoundException;
+import com.goyanov.romashkaco.exceptions.not.found.EntityNotFoundException;
 import com.goyanov.romashkaco.model.Product;
 import com.goyanov.romashkaco.model.dto.ProductDTO;
+import com.goyanov.romashkaco.model.dto.mappers.ModelMapper;
 import com.goyanov.romashkaco.model.dto.mappers.ProductMapper;
 import com.goyanov.romashkaco.repositories.ProductsRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -18,6 +20,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -25,24 +29,19 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class ProductsService
+public class ProductsService extends BaseCrudService<Product, Long, ProductDTO>
 {
-    private final ProductsRepository productsRepository;
-    private final ProductMapper productMapper;
-    private final Validator validator;
-
     @Autowired
-    public ProductsService(ProductsRepository productsRepository, ProductMapper productMapper, Validator validator)
+    public ProductsService
+        (JpaRepository<Product, Long> repository, ModelMapper<Product, ProductDTO> modelMapper, Validator validator)
     {
-        this.productsRepository = productsRepository;
-        this.productMapper = productMapper;
-        this.validator = validator;
+        super(repository, modelMapper, validator);
     }
 
-    public List<ProductDTO> findAll(int page, int size)
+    @Override
+    public EntityNotFoundException getThrowableEntityNotFoundException()
     {
-        Pageable pageable = PageRequest.of(page, size);
-        return productsRepository.findAll(pageable).stream().map(productMapper::toDTO).toList();
+        return new ProductNotFoundException();
     }
 
     public List<ProductDTO> findAllWithFilters
@@ -86,41 +85,7 @@ public class ProductsService
         }
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), orderBy));
-        List<Product> products = productsRepository.findAll(specification, pageable).getContent();
-        return products.stream().map(productMapper::toDTO).toList();
-    }
-
-    public ProductDTO findById(long id)
-    {
-        return productMapper.toDTO(productsRepository.findById(id).orElseThrow(ProductNotFoundException::new));
-    }
-
-    public void save(ProductDTO productDTO)
-    {
-        Product product = productMapper.toEntity(productDTO);
-        Set<ConstraintViolation<Product>> validate = validator.validate(product);
-        if (!validate.isEmpty())
-        {
-            throw new ConstraintViolationException(validate);
-        }
-        productsRepository.save(product);
-    }
-
-    public void update(long id, ProductDTO productDTO)
-    {
-        Product existing = productsRepository.findById(id).orElseThrow(ProductNotFoundException::new);
-        productMapper.copyProperties(productDTO, existing);
-        Set<ConstraintViolation<Product>> validate = validator.validate(existing);
-        if (!validate.isEmpty())
-        {
-            throw new ConstraintViolationException(validate);
-        }
-        productsRepository.save(existing);
-    }
-
-    public void deleteById(long id)
-    {
-        productsRepository.findById(id).orElseThrow(ProductNotFoundException::new);
-        productsRepository.deleteById(id);
+        List<Product> products = ((JpaSpecificationExecutor<Product>)repository).findAll(specification, pageable).getContent();
+        return products.stream().map(modelMapper::toDTO).toList();
     }
 }

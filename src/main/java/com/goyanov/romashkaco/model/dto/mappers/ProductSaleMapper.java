@@ -31,7 +31,7 @@ public class ProductSaleMapper implements ModelMapper<ProductSale, ProductSaleDT
         if (from.getAmount() != null) to.setAmount(from.getAmount());
         if (from.getSalePrice() != null) to.setSalePrice(from.getSalePrice());
         if (from.getDocumentName() != null) to.setDocumentName(from.getDocumentName());
-        if (from.getProductId() != null) to.setProduct(productsSalesService.findById(from.getProductId()).orElse(null));
+//        if (from.getProductId() != null) to.setProduct(productsSalesService.findById(from.getProductId()).orElse(null)); TODO реализовать
     }
 
     @Override

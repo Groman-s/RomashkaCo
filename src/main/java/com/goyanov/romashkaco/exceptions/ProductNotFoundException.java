@@ -1,6 +1,8 @@
 package com.goyanov.romashkaco.exceptions;
 
-public class ProductNotFoundException extends RuntimeException
+import com.goyanov.romashkaco.exceptions.not.found.EntityNotFoundException;
+
+public class ProductNotFoundException extends EntityNotFoundException
 {
     public ProductNotFoundException()
     {
