@@ -3,6 +3,7 @@ package com.goyanov.romashkaco.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "product")
+@Table(name = "product", uniqueConstraints = @UniqueConstraint(name = "uk_product_article", columnNames = "article"))
 public class Product
 {
     @Id
@@ -28,7 +29,8 @@ public class Product
     @Column(name = "product_id")
     private Long id;
 
-    @Column(name = "article", nullable = false, unique = true)
+    @Column(name = "article", nullable = false)
+    @NotNull(message = "У товара обязательно должен быть артикул!")
     @Min(value = 0, message = "Артикул должен быть неотрицательным числом!")
     private Long article;
 
