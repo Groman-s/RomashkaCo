@@ -5,7 +5,7 @@ import com.goyanov.romashkaco.model.dto.ProductDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProductMapper
+public class ProductMapper implements ModelMapper<Product, ProductDTO>
 {
     public Product toEntity(ProductDTO productDTO)
     {
@@ -22,7 +22,7 @@ public class ProductMapper
         if (from.getInStock() != null) to.setInStock(from.getInStock());
     }
 
-    public ProductDTO toDTO(Product product)
+    public ProductDTO toDto(Product product)
     {
         return new ProductDTO(product);
     }
