@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductMapper implements ModelMapper<Product, ProductDTO>
 {
+    @Override
     public Product toEntity(ProductDTO productDTO)
     {
         Product product = new Product();
@@ -14,6 +15,7 @@ public class ProductMapper implements ModelMapper<Product, ProductDTO>
         return product;
     }
 
+    @Override
     public void copyProperties(ProductDTO from, Product to)
     {
         if (from.getName() != null) to.setName(from.getName());
@@ -22,7 +24,8 @@ public class ProductMapper implements ModelMapper<Product, ProductDTO>
         if (from.getInStock() != null) to.setInStock(from.getInStock());
     }
 
-    public ProductDTO toDto(Product product)
+    @Override
+    public ProductDTO toDTO(Product product)
     {
         return new ProductDTO(product);
     }
