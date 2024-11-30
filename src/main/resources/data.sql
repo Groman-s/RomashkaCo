@@ -21,3 +21,14 @@ INSERT INTO product(amount, description, in_stock, name, price) VALUES
 (57, 'Турбомощная', true, 'Электробритва', 4350),
 (98, 'Для выращивания', true, 'Семена яблок', 34),
 (1, 'Для праздников', true, 'Яблочный пирог', 234);
+
+INSERT INTO product_delivery(amount, document_name, product_id) VALUES
+(20, 'Поставка жёлтых яблок', 1),
+(40, 'Поставка плюшевых мишек', 3),
+(100, 'Поставка дубовых дверей', 13),
+(12, 'Поставка сосновых дверей', 14);
+
+INSERT INTO product_sale(amount, document_name, sale_price, product_id) VALUES
+(13, 'Продажа жёлтых яблок', 1000, 1),
+(32, 'Продажа игрушечных дракончиков', 2800, 4),
+(10, 'Продажа зелёных яблок', 3000, 5);
