@@ -5,7 +5,6 @@ import com.goyanov.romashkaco.exceptions.not.found.ProductSaleNotFoundException;
 import com.goyanov.romashkaco.model.ProductSale;
 import com.goyanov.romashkaco.model.dto.ProductSaleDTO;
 import com.goyanov.romashkaco.model.dto.mappers.ModelMapper;
-import com.goyanov.romashkaco.repositories.ProductsSalesRepository;
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;

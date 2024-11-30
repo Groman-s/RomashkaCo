@@ -1,7 +1,6 @@
 package com.goyanov.romashkaco.exceptions.handlers;
 
 import com.goyanov.romashkaco.exceptions.not.found.EntityNotFoundException;
-import com.goyanov.romashkaco.exceptions.not.found.ProductNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;

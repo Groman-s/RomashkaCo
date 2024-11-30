@@ -1,8 +1,8 @@
 package com.goyanov.romashkaco.exceptions.not.found;
 
-public class ProductNotFoundException extends EntityNotFoundException
+public class ProductByIdNotFoundException extends EntityNotFoundException
 {
-    public ProductNotFoundException()
+    public ProductByIdNotFoundException()
     {
         super("Продукт с таким id не найден!");
     }

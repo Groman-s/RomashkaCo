@@ -1,6 +1,6 @@
 package com.goyanov.romashkaco.services;
 
-import com.goyanov.romashkaco.exceptions.not.found.ProductNotFoundException;
+import com.goyanov.romashkaco.exceptions.not.found.ProductByIdNotFoundException;
 import com.goyanov.romashkaco.exceptions.not.found.EntityNotFoundException;
 import com.goyanov.romashkaco.model.Product;
 import com.goyanov.romashkaco.model.dto.ProductDTO;
@@ -31,7 +31,7 @@ public class ProductsService extends BaseCrudService<Product, Long, ProductDTO>
     @Override
     public EntityNotFoundException getThrowableEntityNotFoundException()
     {
-        return new ProductNotFoundException();
+        return new ProductByIdNotFoundException();
     }
 
     public List<ProductDTO> findAllWithFilters
