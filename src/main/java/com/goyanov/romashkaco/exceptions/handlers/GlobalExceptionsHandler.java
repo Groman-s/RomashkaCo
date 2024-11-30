@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
@@ -23,6 +24,21 @@ public class GlobalExceptionsHandler
     public ResponseEntity<?> handleProductNotFound(EntityNotFoundException ex)
     {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(TransactionSystemException.class)
+    public ResponseEntity<?> handleTransactionSystemException(TransactionSystemException ex)
+    {
+        if (ex.getCause() != null && ex.getCause().getCause() instanceof ConstraintViolationException cvx)
+        {
+            List<String> errors = cvx.getConstraintViolations()
+                    .stream()
+                    .map(ConstraintViolation::getMessage)
+                    .toList();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    "Выполнение этой операции вызывает следующее нарушение: " +  errors.get(0));
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Непредвиденная ошибка на сервере!");
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)

@@ -25,4 +25,11 @@ public class ProductSale extends ProductTransaction
     @Min(value = 0, message = "Стоимость продажи не может быть отрицательной!")
     @ColumnDefault("0")
     private BigDecimal salePrice = BigDecimal.ZERO;
+
+    @PrePersist
+    @PreUpdate
+    public void onSave()
+    {
+        product.setAmount(product.getAmount() - amount);
+    }
 }
