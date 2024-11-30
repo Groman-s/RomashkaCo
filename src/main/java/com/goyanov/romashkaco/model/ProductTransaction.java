@@ -30,7 +30,7 @@ public abstract class ProductTransaction
     protected String documentName;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_article", referencedColumnName = "article", nullable = false)
     protected Product product;
 
     @Column(name = "amount", nullable = false)

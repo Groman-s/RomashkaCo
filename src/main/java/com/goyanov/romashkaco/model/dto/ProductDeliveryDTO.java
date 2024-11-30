@@ -13,13 +13,13 @@ import lombok.Setter;
 public class ProductDeliveryDTO
 {
     private String documentName;
-    private Long productId;
+    private Long productArticle;
     private Integer amount;
 
     public ProductDeliveryDTO(ProductDelivery productDelivery)
     {
         this.documentName = productDelivery.getDocumentName();
-        this.productId = productDelivery.getProduct().getId();
+        this.productArticle = productDelivery.getProduct().getArticle();
         this.amount = productDelivery.getAmount();
     }
 }

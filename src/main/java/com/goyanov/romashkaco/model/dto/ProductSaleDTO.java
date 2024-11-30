@@ -15,14 +15,14 @@ import java.math.BigDecimal;
 public class ProductSaleDTO
 {
     private String documentName;
-    private Long productId;
+    private Long productArticle;
     private Integer amount;
     private BigDecimal salePrice;
 
     public ProductSaleDTO(ProductSale productSale)
     {
         this.documentName = productSale.getDocumentName();
-        this.productId = productSale.getProduct().getId();
+        this.productArticle = productSale.getProduct().getArticle();
         this.amount = productSale.getAmount();
         this.salePrice = productSale.getSalePrice();
     }

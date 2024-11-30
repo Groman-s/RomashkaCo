@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ProductDTO
 {
+    private Long article;
     private String name;
     private String description;
     private BigDecimal price;
@@ -24,6 +25,7 @@ public class ProductDTO
 
     public ProductDTO(Product product)
     {
+        this.article = product.getArticle();
         this.name = product.getName();
         this.description = product.getDescription();
         this.price = product.getPrice();

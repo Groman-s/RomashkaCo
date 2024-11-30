@@ -18,6 +18,7 @@ public class ProductMapper implements ModelMapper<Product, ProductDTO>
     @Override
     public void copyProperties(ProductDTO from, Product to)
     {
+        if (from.getArticle() != null) to.setArticle(from.getArticle());
         if (from.getName() != null) to.setName(from.getName());
         if (from.getDescription() != null) to.setDescription(from.getDescription());
         if (from.getPrice() != null) to.setPrice(from.getPrice());

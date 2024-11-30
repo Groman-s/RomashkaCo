@@ -28,6 +28,10 @@ public class Product
     @Column(name = "product_id")
     private Long id;
 
+    @Column(name = "article", nullable = false, unique = true)
+    @Min(value = 0, message = "Артикул должен быть неотрицательным числом!")
+    private Long article;
+
     @Column(name = "name", nullable = false)
     @Check(constraints = "trim(name) <> ''")
     @Size(max = 255, message = "Название товара не должно быть длиннее 255 символов!")
