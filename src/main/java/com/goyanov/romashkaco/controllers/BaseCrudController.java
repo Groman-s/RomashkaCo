@@ -14,7 +14,7 @@ public abstract class BaseCrudController<ENT, ID, DTO>
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable ID id)
+    public ResponseEntity<?> getById(@PathVariable(name = "id") ID id)
     {
         return ResponseEntity.ok(service.findById(id));
     }
@@ -31,14 +31,14 @@ public abstract class BaseCrudController<ENT, ID, DTO>
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable ID id, @RequestBody DTO dto)
+    public ResponseEntity<?> update(@PathVariable(name = "id") ID id, @RequestBody DTO dto)
     {
         service.update(id, dto);
         return ResponseEntity.ok(getUpdatedMessage());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable ID id)
+    public ResponseEntity<?> delete(@PathVariable(name = "id") ID id)
     {
         service.deleteById(id);
         return ResponseEntity.ok().body(getDeletedMessage());

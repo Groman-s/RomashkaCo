@@ -1,5 +1,6 @@
 package com.goyanov.romashkaco.exceptions.handlers;
 
+import com.goyanov.romashkaco.exceptions.not.allowed.DocumentUpdatingNotAllowedException;
 import com.goyanov.romashkaco.exceptions.not.found.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -9,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.TransactionSystemException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
@@ -26,6 +28,18 @@ public class GlobalExceptionsHandler
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<?> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex)
+    {
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(DocumentUpdatingNotAllowedException.class)
+    public ResponseEntity<?> handleDocumentUpdatingNotAllowedException(DocumentUpdatingNotAllowedException ex)
+    {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ex.getMessage());
+    }
+
     @ExceptionHandler(TransactionSystemException.class)
     public ResponseEntity<?> handleTransactionSystemException(TransactionSystemException ex)
     {
@@ -36,7 +50,7 @@ public class GlobalExceptionsHandler
                     .map(ConstraintViolation::getMessage)
                     .toList();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    "Выполнение этой операции вызывает следующее нарушение: " +  errors.get(0));
+                    "Выполнение этой операции вызывает следующее нарушение: " + errors.get(0));
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Непредвиденная ошибка на сервере!");
     }
